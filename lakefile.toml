@@ -1,0 +1,17 @@
+name = "ai4math"
+version = "0.1.0"
+defaultTargets = ["ai4math"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "master"
+
+[[lean_lib]]
+name = "Ai4math"
+
+[[lean_exe]]
+name = "ai4math"
+root = "Main"
+
+
