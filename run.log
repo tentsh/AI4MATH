@@ -1,0 +1,42 @@
+=== Analytic Lipschitz constants (Fix 1) ===
+  zero-chain : L = 2.0
+    F = 0.5||x||^2 + (0.1/d)*sum_k exp(-x_k^2/0.1)*x_{k+1}^2
+    Hessian bound on B(0,0.5): max eigenvalue <= 1 + 3/d < 2  =>  L=2
+  sinusoid   : L = 1.0
+    F = 0.5||x||^2 + (0.1/d)*sum_k sin(x_k)
+    Hessian = I - diag((0.1/d)*sin(x_k)), ||H||_2 <= 1+0.1/d < 1.01  =>  L=1
+
+N_MAX=1,000,000  SIGMA=0.5  EVAL_EVERY=200  EVAL_BATCH=200
+Objectives : ['zerochain', 'sinusoid']
+Schedules  : ['A', 'B', 'C', 'D']
+Eps grid   : [0.5, 0.3, 0.2, 0.15, 0.1, 0.07, 0.05]
+Seeds/config: 10
+
+Resuming: 20 results already saved.
+  50/560  (zerochain, A, eps=0.1) [budget_limited]
+  100/560  (zerochain, B, eps=0.2)
+  150/560  (zerochain, C, eps=0.5)
+  200/560  (zerochain, C, eps=0.07)
+  250/560  (zerochain, D, eps=0.15)
+  300/560  (sinusoid, A, eps=0.3) [budget_limited]
+  350/560  (sinusoid, A, eps=0.05) [budget_limited]
+  400/560  (sinusoid, B, eps=0.1)
+  450/560  (sinusoid, C, eps=0.2)
+  500/560  (sinusoid, D, eps=0.5)
+  550/560  (sinusoid, D, eps=0.07)
+  560/560  (sinusoid, D, eps=0.05)
+Done. Results saved to results_clean.csv
+
+=== SCALING EXPONENT ANALYSIS (N vs 1/eps) ===
+Obj         Sched     p_full  95%CI_full           p_clean  95%CI_clean       
+------------------------------------------------------------------------------
+zerochain   A          2.803  [1.844, 3.718]    14.549  [12.170, 17.593]
+zerochain   B          3.180  [2.847, 3.608]     3.178  [2.835, 3.558]
+zerochain   C          3.527  [3.142, 3.974]     3.501  [3.131, 3.976]
+zerochain   D          2.926  [2.536, 3.368]     2.920  [2.544, 3.324]
+sinusoid    A          2.779  [1.615, 3.808]       n/a  n/a               
+sinusoid    B          3.341  [2.894, 3.830]     3.339  [2.936, 3.807]
+sinusoid    C          3.973  [3.593, 4.442]     4.045  [3.495, 4.695]
+sinusoid    D          3.415  [3.016, 3.886]     3.419  [3.008, 3.916]
+
+Plot saved to scaling_results_clean.png

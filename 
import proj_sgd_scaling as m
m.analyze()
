@@ -1,0 +1,32 @@
+Calibrating Lipschitz constants...
+  Rosenbrock raw L=326.3421, scale=0.003064
+  Sinusoid raw L=1.0017, scale=0.998314
+  After calibration: Rosenbrock L=1.0000, Sinusoid L=1.0017
+Starting Projected SGD scaling exponent experiment...
+Domain: R^10 ball, radius=0.5, L=1.0
+Objectives: ['zerochain', 'rosenbrock', 'sinusoid']
+Schedules: ['A', 'B', 'C', 'D']
+Epsilon grid: [0.5, 0.3, 0.2, 0.15, 0.1, 0.07, 0.05]
+Seeds per config: 10, N_max: 1,000,000
+
+Resuming: 840 results already saved.
+Done. Results saved to results.csv
+
+=== SCALING EXPONENT ANALYSIS ===
+
+Objective      Sched  Slope N      95% CI               Slope PL     95% CI (PL)         
+----------------------------------------------------------------------------------------
+zerochain      A      4.402        [3.646, 5.123]       4.423        [3.631, 5.188]      
+zerochain      B      0.381        [0.246, 0.501]       0.178        [0.114, 0.239]      
+zerochain      C      1.040        [0.787, 1.271]       0.660        [0.512, 0.813]      
+zerochain      D      0.719        [0.565, 0.886]       0.542        [0.419, 0.656]      
+rosenbrock     A      5.208        [4.709, 5.626]       14.839       [11.625, 17.248]    
+rosenbrock     B      1.776        [1.322, 2.165]       8.534        [5.809, 10.852]     
+rosenbrock     C      2.127        [1.685, 2.508]       8.996        [6.184, 11.245]     
+rosenbrock     D      1.837        [1.339, 2.219]       8.954        [5.910, 11.337]     
+sinusoid       A      5.797        [4.821, 6.693]       12.202       [7.319, 17.372]     
+sinusoid       B      1.068        [0.564, 1.567]       3.951        [1.122, 6.758]      
+sinusoid       C      1.705        [1.231, 2.185]       4.537        [1.669, 7.336]      
+sinusoid       D      1.403        [0.918, 1.889]       4.554        [1.490, 7.417]      
+
+Plot saved to scaling_results.png
