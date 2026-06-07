@@ -1,0 +1,64 @@
+Reproducibility
+===============
+
+Instance generation
+-------------------
+Arjevani zero-chain with a radial quadratic term that keeps the projection onto
+X = B(0, R) inactive throughout optimization (R = 0.5).
+
+Software
+--------
+Python with numpy, installed via conda.
+
+Parameters
+----------
+Global constants:
+  L       = 1.0   (smoothness / Lipschitz constant)
+  D_X     = 1.0   (diameter of feasible set)
+  sigma   = 1.0   (noise level)
+  R       = 0.5   (ball radius)
+
+Schedule B  -- diminishing stepsize, constant batch:
+  eta_t   = min(1/L, 1/sqrt(t))
+  b_t     = 1
+
+Schedule D  -- constant stepsize, growing batch:
+  eta     = 1/L
+  b_t     = ceil(sqrt(t))
+
+Chain length T = max(5, min(50, round(1 / (4 * eps^2)))):
+
+  eps    T    d=2T
+  0.30    5    10
+  0.20    6    12
+  0.15   11    22
+  0.10   25    50
+  0.07   50   100
+
+Sample budget: N_max = 500,000
+
+Seeds and metrics
+-----------------
+  - 5 independent seeds per (schedule, eps) configuration (seeds 0-4).
+  - Convergence criterion: stationarity estimate ||P_X grad F(x)|| <= eps,
+    computed as a 200-sample Monte Carlo average, evaluated every 500 steps.
+  - Clean-regime threshold: >= 60% of seeds converged within budget.
+  - Reported statistic: median N across all 5 seeds.
+
+Reproducing the figure
+----------------------
+Run from the repo root:
+
+    python arjevani_experiment.py
+
+This will:
+  1. Run all (schedule, eps, seed) combinations and write results to
+     results/results_arjevani.csv (resumes automatically if interrupted).
+  2. Fit log N ~ p * log(1/eps) slopes via bootstrap (1000 resamples).
+  3. Save the scaling plot to figures/arjevani_scaling.png.
+
+Repository layout
+-----------------
+  figures/     -- all output plots (.png)
+  results/     -- all result tables (.csv) and trajectories/
+  logs/        -- run logs (.log)

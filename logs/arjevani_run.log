@@ -1,0 +1,122 @@
+=== Arjevani Experiment Parameters ===
+  L_target=1.0  D_X=1.0  sigma=1.0  ell_1=152  eta_0=0.2
+  N_max=500,000  seeds=5  schedules=['B', 'D']
+
+  eps        T     d
+  ------------------
+  0.30       5    10
+  0.20       6    12
+  0.15      11    22
+  0.10      25    50
+  0.07      50   100
+
+Resuming: 17 results already saved.
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/core/__init__.py", line 24, in <module>
+    from . import multiarray
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/core/multiarray.py", line 10, in <module>
+    from . import overrides
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/core/overrides.py", line 8, in <module>
+    from numpy.core._multiarray_umath import (
+ImportError: dlopen(/opt/anaconda3/lib/python3.12/site-packages/numpy/core/_multiarray_umath.cpython-312-darwin.so, 0x0002): Library not loaded: @rpath/libgfortran.5.dylib
+  Referenced from: <2361AC48-B968-30D4-90C5-D4993FC8C530> /opt/anaconda3/lib/libopenblasp-r0.3.21.dylib
+  Reason: tried: '/opt/anaconda3/lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/lib/python3.12/site-packages/numpy/core/../../../../libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/lib/python3.12/site-packages/numpy/core/../../../../libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/bin/../lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/bin/../lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/usr/local/lib/libgfortran.5.dylib' (no such file), '/usr/lib/libgfortran.5.dylib' (no such file, not in dyld cache)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/__init__.py", line 130, in <module>
+    from numpy.__config__ import show as show_config
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/__config__.py", line 4, in <module>
+    from numpy.core._multiarray_umath import (
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/core/__init__.py", line 50, in <module>
+    raise ImportError(msg)
+ImportError: 
+
+IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
+
+Importing the numpy C-extensions failed. This error can happen for
+many reasons, often due to issues with your setup or how NumPy was
+installed.
+
+We have compiled some common reasons and troubleshooting tips at:
+
+    https://numpy.org/devdocs/user/troubleshooting-importerror.html
+
+Please note and check the following:
+
+  * The Python version is: Python3.12 from "/opt/anaconda3/bin/python3"
+  * The NumPy version is: "1.26.4"
+
+and make sure that they are the versions you expect.
+Please carefully study the documentation linked above for further help.
+
+Original error was: dlopen(/opt/anaconda3/lib/python3.12/site-packages/numpy/core/_multiarray_umath.cpython-312-darwin.so, 0x0002): Library not loaded: @rpath/libgfortran.5.dylib
+  Referenced from: <2361AC48-B968-30D4-90C5-D4993FC8C530> /opt/anaconda3/lib/libopenblasp-r0.3.21.dylib
+  Reason: tried: '/opt/anaconda3/lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/lib/python3.12/site-packages/numpy/core/../../../../libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/lib/python3.12/site-packages/numpy/core/../../../../libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/bin/../lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/opt/anaconda3/bin/../lib/libgfortran.5.dylib' (duplicate LC_RPATH '@loader_path'), '/usr/local/lib/libgfortran.5.dylib' (no such file), '/usr/lib/libgfortran.5.dylib' (no such file, not in dyld cache)
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/tentsh/ai4math/arjevani_experiment.py", line 6, in <module>
+    import numpy as np
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/__init__.py", line 135, in <module>
+    raise ImportError(msg) from e
+ImportError: Error importing numpy: you should not try to import numpy from
+        its source directory; please exit the numpy source tree, and relaunch
+        your python interpreter from there.
+=== Arjevani Experiment Parameters ===
+  L_target=1.0  D_X=1.0  sigma=1.0  ell_1=152  eta_0=0.2
+  N_max=500,000  seeds=5  schedules=['B', 'D']
+
+  eps        T     d
+  ------------------
+  0.30       5    10
+  0.20       6    12
+  0.15      11    22
+  0.10      25    50
+  0.07      50   100
+
+Resuming: 17 results already saved.
+=== Arjevani Experiment Parameters ===
+  L_target=1.0  D_X=1.0  sigma=1.0  ell_1=152  eta_0=0.2
+  N_max=500,000  seeds=5  schedules=['B', 'D']
+
+  eps        T     d
+  ------------------
+  0.30       5    10
+  0.20       6    12
+  0.15      11    22
+  0.10      25    50
+  0.07      50   100
+
+Resuming: 17 results already saved.
+=== Arjevani Experiment Parameters ===
+  L_target=1.0  D_X=1.0  sigma=1.0  ell_1=152  eta_0=0.2
+  N_max=500,000  seeds=5  schedules=['B', 'D']
+
+  eps        T     d
+  ------------------
+  0.30       5    10
+  0.20       6    12
+  0.15      11    22
+  0.10      25    50
+  0.07      50   100
+
+Resuming: 17 results already saved.
+  40/50  (B, eps=0.07, seed=2)  N=500,000  BUDGET
+  50/50  (D, eps=0.2, seed=2)  N=8,105  OK
+  60/50  (D, eps=0.1, seed=2)  N=500,078  BUDGET
+
+Done. Saved to results_arjevani.csv
+
+=== SCALING ANALYSIS: log N vs log(1/epsilon) ===
+Sched     p_full  CI_full                p_clean  CI_clean            
+----------------------------------------------------------------------
+B          5.142  [4.639, 5.863]     3.007  [1.903, 3.903]
+         success rates by eps: 0.3:100%  0.2:100%  0.15:100%  0.1:0%  0.07:0%  
+D          3.432  [3.049, 3.983]     3.170  [1.633, 4.677]
+         success rates by eps: 0.3:100%  0.2:100%  0.15:100%  0.1:0%  0.07:0%  
+
+Plot saved to arjevani_scaling.png

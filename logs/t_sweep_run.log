@@ -1,0 +1,49 @@
+=== Arjevani T-Sweep Experiment ===
+T values   : [10, 25, 50, 100]
+d values   : [20, 50, 100, 200]
+eps grid   : [0.2, 0.15, 0.1]
+schedule   : B
+seeds/cfg  : 3
+N_max      : 1,000,000
+total runs : 36
+
+  5/36  (T=10, eps=0.15, seed=1)  N=4,400  OK
+
+--- Runtime estimate (based on 9 T=10 runs, 160.3s total, 17.8s/run) ---
+  T= 25  (9 runs)  ~16.7 min  (scale factor 6x)
+  T= 50  (9 runs)  ~66.8 min  (scale factor 25x)
+  T=100  (9 runs)  ~267.2 min  (scale factor 100x)
+  Total remaining estimate: ~351 min
+  Grand total estimate:     ~353 min
+
+  10/36  (T=25, eps=0.2, seed=0)  N=31,000  OK
+=== Arjevani T-Sweep Experiment ===
+T values   : [10, 25, 50]
+d values   : [20, 50, 100]
+eps grid   : [0.2, 0.15, 0.1]
+schedule   : B
+seeds/cfg  : 3
+N_max      : 1,000,000
+total runs : 27
+
+Resuming: 14 results already saved.
+  T=10 block already complete, skipping estimation.
+  20/27  (T=25, eps=0.15, seed=2)  N=132,500  OK
+  25/27  (T=50, eps=0.2, seed=1)  N=186,400  OK
+  27/27  (T=50, eps=0.15, seed=0)  N=1,000,000  BUDGET
+  30/27  (T=50, eps=0.1, seed=0)  N=1,000,000  BUDGET
+
+Done. Saved to results_t_sweep.csv
+
+=== T-SWEEP RESULTS ===
+    T     eps   succ       med_N   proj_rate    act_step
+----------------------------------------------------------
+   10    0.20   100%       3,000       0.949         500
+   10    0.15   100%       9,300       0.867         500
+   10    0.10   100%     102,400       0.679         500
+   25    0.20   100%      22,600       0.950         500
+   25    0.15   100%     259,200       0.834         500
+   25    0.10     0%   1,000,000       0.671         500
+   50    0.20   100%     186,400       0.936         500
+   50    0.15     0%   1,000,000       0.835         500
+   50    0.10     0%   1,000,000       0.704         500

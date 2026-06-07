@@ -133,7 +133,7 @@ EPS_GRID   = [0.5, 0.3, 0.2, 0.15, 0.1, 0.07, 0.05]
 N_SEEDS    = 10
 N_MAX      = 1_000_000
 EVAL_EVERY = 200          # Fix 5: evaluate every 200 steps
-RESULTS_FILE = 'results_clean.csv'
+RESULTS_FILE = 'results/results_clean.csv'
 
 # ---------------------------------------------------------------------------
 # Single run
@@ -169,6 +169,7 @@ def run_experiment():
     fieldnames = ['objective', 'schedule', 'epsilon', 'seed', 'N', 'path_length', 'success']
     already_done = set()
 
+    os.makedirs('results', exist_ok=True)
     if os.path.exists(RESULTS_FILE):
         with open(RESULTS_FILE) as f:
             for row in csv.DictReader(f):
@@ -381,7 +382,8 @@ def plot_results(rows, summary):
         fontsize=12,
     )
     plt.tight_layout()
-    out = 'scaling_results_clean.png'
+    out = 'figures/scaling_results_clean.png'
+    os.makedirs('figures', exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches='tight')
     print(f"\nPlot saved to {out}")
 

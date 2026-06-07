@@ -11,7 +11,7 @@ import csv
 import os
 from itertools import product
 
-from arjevani_rotated import make_U
+from arjevani_rotated import make_U, rho
 from arjevani_full import F_scaled, grad_F_scaled, make_lambda, sample_ball
 from arjevani_sgd import project, stoch_grad, stat_estimate
 
@@ -29,7 +29,8 @@ N_MAX      = 500_000
 EVAL_EVERY = 500
 R          = D_X / 2          # ball radius = 0.5
 SCHEDULES  = ['B', 'D']
-RESULTS_FILE = 'results_arjevani.csv'
+RESULTS_FILE = 'results/results_arjevani.csv'
+TRAJ_DIR     = 'results/trajectories'
 
 
 def compute_T(eps: float) -> int:
@@ -53,6 +54,18 @@ def print_params():
 # Single run
 # ---------------------------------------------------------------------------
 
+def _save_trajectory(schedule: str, epsilon: float, seed: int,
+                     traj: list) -> None:
+    """Write (step, last_coord) pairs to trajectories/<schedule><eps><seed>.csv."""
+    os.makedirs(TRAJ_DIR, exist_ok=True)
+    fname = os.path.join(TRAJ_DIR,
+                         f"trajectory_{schedule}{epsilon}_{seed}.csv")
+    with open(fname, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=['step', 'last_coord'])
+        writer.writeheader()
+        writer.writerows({'step': s, 'last_coord': c} for s, c in traj)
+
+
 def run_single(schedule: str, epsilon: float, seed: int) -> dict:
     T   = compute_T(epsilon)
     d   = 2 * T
@@ -69,13 +82,30 @@ def run_single(schedule: str, epsilon: float, seed: int) -> dict:
     converged     = False
     last_stat     = float('inf')
 
+    # Diagnostic state
+    projections_active      = 0     # steps where unprojected point left the ball
+    coord_traj              = []    # (step, last_coord) at each eval step
+    activation_step         = -1   # first step |last_coord| > 0.01
+
+    def _record_coord(step):
+        # x is always in the ball (|x_i| <= ||x|| <= R < 1), so rho(x) = x
+        last_coord = float((U.T @ x)[T - 1])
+        coord_traj.append((step, last_coord))
+        return last_coord
+
     # Initial stationarity estimate
     last_stat      = stat_estimate(x, U, lam, L_TARGET, SIGMA, rng)
     total_samples += 200
+    _record_coord(0)
+
     if last_stat <= epsilon:
+        _save_trajectory(schedule, epsilon, seed, coord_traj)
         return dict(schedule=schedule, epsilon=epsilon, seed=seed,
                     T=T, d=d, N=total_samples, path_length=path_length,
-                    success=1, budget_limited=0)
+                    success=1, budget_limited=0,
+                    projection_rate=0.0,
+                    last_coord_activation_step=activation_step,
+                    T_used=T)
 
     while total_samples < N_MAX:
         t += 1
@@ -87,24 +117,41 @@ def run_single(schedule: str, epsilon: float, seed: int) -> dict:
             eta        = 1.0 / L_TARGET
             batch_size = int(np.ceil(np.sqrt(t)))
 
-        g      = stoch_grad(x, U, lam, L_TARGET, batch_size, SIGMA, rng)
+        g           = stoch_grad(x, U, lam, L_TARGET, batch_size, SIGMA, rng)
         total_samples += batch_size
 
-        x_new       = project(x - eta * g)
+        # Diagnostic 1: projection activity — check before projecting
+        x_raw = x - eta * g
+        if np.linalg.norm(x_raw) > R:
+            projections_active += 1
+
+        x_new       = project(x_raw)
         path_length += float(np.linalg.norm(x_new - x))
         x           = x_new
 
         if t % EVAL_EVERY == 0:
+            # Diagnostic 2 & 3: last-coord trajectory
+            lc = _record_coord(t)
+            if activation_step == -1 and abs(lc) > 0.01:
+                activation_step = t
+
             last_stat      = stat_estimate(x, U, lam, L_TARGET, SIGMA, rng)
             total_samples += 200
             if last_stat <= epsilon:
                 converged = True
                 break
 
-    budget_limited = int(not converged)
+    projection_rate = projections_active / t if t > 0 else 0.0
+    budget_limited  = int(not converged)
+
+    _save_trajectory(schedule, epsilon, seed, coord_traj)
+
     return dict(schedule=schedule, epsilon=epsilon, seed=seed,
                 T=T, d=d, N=total_samples, path_length=path_length,
-                success=int(converged), budget_limited=budget_limited)
+                success=int(converged), budget_limited=budget_limited,
+                projection_rate=projection_rate,
+                last_coord_activation_step=activation_step,
+                T_used=T)
 
 
 # ---------------------------------------------------------------------------
@@ -113,9 +160,11 @@ def run_single(schedule: str, epsilon: float, seed: int) -> dict:
 
 def run_experiment():
     fieldnames = ['schedule', 'epsilon', 'seed', 'T', 'd',
-                  'N', 'path_length', 'success', 'budget_limited']
+                  'N', 'path_length', 'success', 'budget_limited',
+                  'projection_rate', 'last_coord_activation_step', 'T_used']
     already_done = set()
 
+    os.makedirs('results', exist_ok=True)
     if os.path.exists(RESULTS_FILE):
         with open(RESULTS_FILE) as f:
             for row in csv.DictReader(f):
@@ -170,6 +219,9 @@ def load_results() -> list:
                 path_length=float(row['path_length']),
                 success=int(row['success']),
                 budget_limited=int(row['budget_limited']),
+                projection_rate=float(row.get('projection_rate', 0.0)),
+                last_coord_activation_step=int(row.get('last_coord_activation_step', -1)),
+                T_used=int(row.get('T_used', row['T'])),
             ))
     return rows
 
@@ -311,7 +363,8 @@ def plot_results(rows: list, summary: dict):
     ax.grid(True, which='both', alpha=0.3)
 
     plt.tight_layout()
-    out = 'arjevani_scaling.png'
+    out = 'figures/arjevani_scaling.png'
+    os.makedirs('figures', exist_ok=True)
     plt.savefig(out, dpi=150, bbox_inches='tight')
     print(f"\nPlot saved to {out}")
 
